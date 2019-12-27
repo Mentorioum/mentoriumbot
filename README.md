@@ -1,5 +1,11 @@
 # mentoriumbot
 
+## Configure app
+
+Copy '.env.sample' to '.env'
+
+Replace with your env variables
+
 ## Running the app
 
 ```bash
