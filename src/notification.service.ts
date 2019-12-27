@@ -2,35 +2,51 @@ import { Injectable } from '@nestjs/common';
 import {
   createTokenAuth,
 } from "@octokit/auth";
-import { graphql } from '@octokit/graphql';
+import Octokit from '@octokit/rest';
 
 @Injectable()
 export class NotificationService {
-  /**
-   * @todo #1:30m/DEV User other client to get list notification
-   *  looks like grapql doesn't have notification data use other client
-   */
-  async getHello(): Promise<object> {
 
+
+  /**
+   * @todo #1:30m/DEV Provide proper time/since params to control list of notifications
+   *  use it for request latest notification
+   *
+   */
+
+
+  async getLatestNotification(): Promise<object> {
 
     const auth = createTokenAuth(process.env.GITHUB_TOKEN);
     const authentication = await auth();
 
     console.log({authentication});
 
-
-    const graphqlWithAuth = graphql.defaults({
-      request: {
-        hook: auth.hook
-      }
+    const octokit  = new Octokit({
+      auth: process.env.GITHUB_TOKEN
     });
 
 
-    return await graphqlWithAuth(`{
-       viewer {
-        login
-        name
-      }
-    }`);
+    const { data } = await octokit.activity.listNotifications({
+      per_page: 5,
+      participating: true
+    });
+
+    console.log({data});
+
+    return data;
   }
+
+  /**
+   * @todo #1,30m/DEV  Define start/stop watch over notifications
+   *  it starts/stops simple interval over watcher
+   *
+   */
+
+  /**
+   * @todo #1,30m/DEV  Define interface for worker
+   *  it starts/stops simple interval over watcher
+   *
+   */
+
 }

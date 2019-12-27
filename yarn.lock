@@ -511,7 +511,7 @@
     "@octokit/types" "^2.0.0"
     universal-user-agent "^4.0.0"
 
-"@octokit/request-error@^1.0.1", "@octokit/request-error@^1.0.4", "@octokit/request-error@^1.1.0":
+"@octokit/request-error@^1.0.1", "@octokit/request-error@^1.0.2", "@octokit/request-error@^1.0.4", "@octokit/request-error@^1.1.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@octokit/request-error/-/request-error-1.2.0.tgz#a64d2a9d7a13555570cd79722de4a4d76371baaa"
   integrity sha512-DNBhROBYjjV/I9n7A8kVkmQNkqFAMem90dSxqvPq57e2hBr7mNTX98y3R2zDpqMQHVRpBDjsvsfIGgBzy+4PAg==
@@ -520,7 +520,7 @@
     deprecation "^2.0.0"
     once "^1.4.0"
 
-"@octokit/request@^5.3.0":
+"@octokit/request@^5.2.0", "@octokit/request@^5.3.0":
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/@octokit/request/-/request-5.3.1.tgz#3a1ace45e6f88b1be4749c5da963b3a3b4a2f120"
   integrity sha512-5/X0AL1ZgoU32fAepTfEoggFinO3rxsMLtzhlUX+RctLrusn/CApJuGFCd0v7GMFhF+8UiCsTTfsu7Fh1HnEJg==
@@ -531,6 +531,24 @@
     deprecation "^2.0.0"
     is-plain-object "^3.0.0"
     node-fetch "^2.3.0"
+    once "^1.4.0"
+    universal-user-agent "^4.0.0"
+
+"@octokit/rest@^16.36.0":
+  version "16.36.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.36.0.tgz#99892c57ba632c2a7b21845584004387b56c2cb7"
+  integrity sha512-zoZj7Ya4vWBK4fjTwK2Cnmu7XBB1p9ygSvTk2TthN6DVJXM4hQZQoAiknWFLJWSTix4dnA3vuHtjPZbExYoCZA==
+  dependencies:
+    "@octokit/request" "^5.2.0"
+    "@octokit/request-error" "^1.0.2"
+    atob-lite "^2.0.0"
+    before-after-hook "^2.0.0"
+    btoa-lite "^1.0.0"
+    deprecation "^2.0.0"
+    lodash.get "^4.4.2"
+    lodash.set "^4.3.2"
+    lodash.uniq "^4.5.0"
+    octokit-pagination-methods "^1.1.0"
     once "^1.4.0"
     universal-user-agent "^4.0.0"
 
@@ -1196,6 +1214,11 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
+atob-lite@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/atob-lite/-/atob-lite-2.0.0.tgz#0fef5ad46f1bd7a8502c65727f0367d5ee43d696"
+  integrity sha1-D+9a1G8b16hQLGVyfwNn1e5D1pY=
+
 atob@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
@@ -1295,6 +1318,11 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
+
+before-after-hook@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-2.1.0.tgz#b6c03487f44e24200dd30ca5e6a1979c5d2fb635"
+  integrity sha512-IWIbu7pMqyw3EAJHzzHbWa85b6oud/yfKYg5rqB5hNE8CeMi3nX+2C2sj0HswfblST86hpVEOAb9x34NZd6P7A==
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -4058,6 +4086,11 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -4098,6 +4131,11 @@ lodash.once@^4.0.0:
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
   integrity sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
 
+lodash.set@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
+  integrity sha1-2HV7HagH3eJIFrDWqEvqGnYjCyM=
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -4107,6 +4145,11 @@ lodash.toarray@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.toarray/-/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
   integrity sha1-JMS/zWsvuji/0FlNsRedjptlZWE=
+
+lodash.uniq@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
+  integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
 lodash@^4.17.13, lodash@^4.17.15:
   version "4.17.15"
@@ -4652,6 +4695,11 @@ object.pick@^1.3.0:
   integrity sha1-h6EKxMFpS9Lhy/U1kaZhQftd10c=
   dependencies:
     isobject "^3.0.1"
+
+octokit-pagination-methods@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/octokit-pagination-methods/-/octokit-pagination-methods-1.1.0.tgz#cf472edc9d551055f9ef73f6e42b4dbb4c80bea4"
+  integrity sha512-fZ4qZdQ2nxJvtcasX7Ghl+WlWS/d9IgnBIwFZXVNNZUmzpno91SX5bc5vuxiuKoCtK78XxGGNuSCrDC7xYB3OQ==
 
 on-finished@^2.3.0, on-finished@~2.3.0:
   version "2.3.0"
