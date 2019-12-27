@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class AppService {
+export class NotificationService {
   /**
    * @todo #1:30m/DEV Get List of notification from Github
    *  use graphql to request for notifications
