@@ -35,6 +35,14 @@ export class NotificationService {
 
     console.log({data});
 
+
+    /**
+     * @todo #1:30m/DEV answer to latest notification in thread
+     *  answer 'hello' if you was mentioned
+     *
+     */
+
+
     return data;
   }
 
