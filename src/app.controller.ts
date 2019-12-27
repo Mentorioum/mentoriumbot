@@ -6,7 +6,7 @@ export class AppController {
   constructor(private readonly appService: NotificationService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async getHello(): Promise<object> {
+    return await this.appService.getHello();
   }
 }

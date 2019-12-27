@@ -1,13 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import {
+  createTokenAuth,
+} from "@octokit/auth";
+import { graphql } from '@octokit/graphql';
 
 @Injectable()
 export class NotificationService {
   /**
-   * @todo #1:30m/DEV Get List of notification from Github
-   *  use graphql to request for notifications
-   *  rename to notification service
+   * @todo #1:30m/DEV User other client to get list notification
+   *  looks like grapql doesn't have notification data use other client
    */
-  getHello(): string {
-    return 'Hello World!';
+  async getHello(): Promise<object> {
+
+
+    const auth = createTokenAuth(process.env.GITHUB_TOKEN);
+    const authentication = await auth();
+
+    console.log({authentication});
+
+
+    const graphqlWithAuth = graphql.defaults({
+      request: {
+        hook: auth.hook
+      }
+    });
+
+
+    return await graphqlWithAuth(`{
+       viewer {
+        login
+        name
+      }
+    }`);
   }
 }
