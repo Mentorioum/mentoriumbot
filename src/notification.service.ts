@@ -10,7 +10,7 @@ export class NotificationService {
 
   /**
    * @todo #1:30m/DEV Provide proper time/since params to control list of notifications
-   *  use it for request latest notification
+   *  find notification/subscriptions for mentioned user
    *
    */
 
@@ -29,7 +29,8 @@ export class NotificationService {
 
     const { data } = await octokit.activity.listNotifications({
       per_page: 5,
-      participating: true
+      participating: true,
+      since: '2019-12-27T00:00:00Z'
     });
 
     console.log({data});
