@@ -27,20 +27,27 @@ export class NotificationService {
     });
 
 
-    let { data } = await octokit.activity.listNotifications({
+    let response  = await octokit.activity.listNotifications({
       per_page: 5,
       participating: true,
       since: '2019-12-27T00:00:00Z'
     });
 
+    let data: any = response.data.pop();
+
     console.log({data});
 
     try {
+      let ownerLogin = data.repository.owner.login;
+      let issueUrl = data.subject.url;
+      let issueNumber = issueUrl.match(/(\d.)$/)[0];
+
+      let repoName = data.repository.name;
       const response = await octokit.issues.createComment({
-        repo: 'mentoriumbot',
-        owner: 'Mentorioum',
-        issue_number: 11,
-        body: 'hi !'
+        repo: repoName,
+        owner: ownerLogin,
+        issue_number: issueNumber,
+        body: `Hi there ! ${ownerLogin}`
       });
 
       console.log({response});
@@ -48,9 +55,6 @@ export class NotificationService {
     } catch (e) {
       console.error('Error Creating Comments', e);
     }
-
-
-
 
     /**
      * @todo #1:30m/DEV answer to latest notification in thread
