@@ -27,13 +27,29 @@ export class NotificationService {
     });
 
 
-    const { data } = await octokit.activity.listNotifications({
+    let { data } = await octokit.activity.listNotifications({
       per_page: 5,
       participating: true,
       since: '2019-12-27T00:00:00Z'
     });
 
     console.log({data});
+
+    try {
+      const response = await octokit.issues.createComment({
+        repo: 'mentoriumbot',
+        owner: 'Mentorioum',
+        issue_number: 11,
+        body: 'hi !'
+      });
+
+      console.log({response});
+
+    } catch (e) {
+      console.error('Error Creating Comments', e);
+    }
+
+
 
 
     /**
