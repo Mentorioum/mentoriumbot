@@ -5,13 +5,6 @@ import Octokit from '@octokit/rest';
 @Injectable()
 export class NotificationService {
 
-
-  /**
-   * @todo #1:30m/DEV Provide proper time/since params to control list of notifications
-   *  find notification/subscriptions for mentioned user
-   *
-   */
-
   async getLatestNotification(): Promise<object> {
 
     const auth = createTokenAuth(process.env.GITHUB_TOKEN);
@@ -39,25 +32,22 @@ export class NotificationService {
       let issueUrl = data.subject.url;
 
       /**
-       * @todo #9:20m/DEV
+       * @todo #9:20m/DEV Use user information from latest comment
        *  get information from latest command about user and add it's name to answer
        *
        */
+
+      let issueNumber = issueUrl.match(/(\d.)$/)[0];
+      response = await octokit.request(data.subject.latest_comment_url);
+
+      console.log('Comment', {response});
+      let repoName = data.repository.name;
 
       /**
        * @todo: #9:30m/DEV Answer on latest comment, where bot was mentioned
        *  it's possible that latest comment in issue is not the comment where you was mentioned ...
        */
 
-      let issueNumber = issueUrl.match(/(\d.)$/)[0];
-
-      response = await octokit.request(data.subject.latest_comment_url);
-
-
-      console.log('Comment', {response});
-
-
-      let repoName = data.repository.name;
       response = await octokit.issues.createComment({
         repo: repoName,
         owner: ownerLogin,
@@ -81,14 +71,8 @@ export class NotificationService {
   }
 
   /**
-   * @todo #1,30m/DEV  Define start/stop watch over notifications
-   *  it starts/stops simple interval over watcher
-   *
-   */
-
-  /**
-   * @todo #1,30m/DEV  Define interface for worker
-   *  it starts/stops simple interval over watcher
+   * @todo #9,30m/DEV  Define start/stop endpoint watch over notifications
+   *  use simple setInterval for listen over notifications
    *
    */
 
