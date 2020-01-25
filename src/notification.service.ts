@@ -3,7 +3,7 @@ import { createTokenAuth } from '@octokit/auth';
 import Octokit from '@octokit/rest';
 
 /**
- * @todo #9,30m/DEV  Define start/stop endpoint watch over notifications
+ * @todo #9:30m/DEV  Define start/stop endpoint watch over notifications
  *  use simple setInterval for listen over notifications
  *
  */
