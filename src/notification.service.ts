@@ -44,8 +44,9 @@ export class NotificationService {
       let repoName = data.repository.name;
 
       /**
-       * @todo: #9:30m/DEV Answer on latest comment, where bot was mentioned
-       *  it's possible that latest comment in issue is not the comment where you was mentioned ...
+       * @todo #9:30m/DEV Answer on latest comment, where bot was mentioned
+       *  it's possible that latest comment in issue is not the comment
+       *  where you was mentioned
        */
 
       response = await octokit.issues.createComment({
