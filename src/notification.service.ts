@@ -2,6 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { createTokenAuth } from '@octokit/auth';
 import Octokit from '@octokit/rest';
 
+/**
+ * @todo #9,30m/DEV  Define start/stop endpoint watch over notifications
+ *  use simple setInterval for listen over notifications
+ *
+ */
+
 @Injectable()
 export class NotificationService {
 
@@ -70,11 +76,4 @@ export class NotificationService {
 
     return data;
   }
-
-  /**
-   * @todo #9,30m/DEV  Define start/stop endpoint watch over notifications
-   *  use simple setInterval for listen over notifications
-   *
-   */
-
 }
