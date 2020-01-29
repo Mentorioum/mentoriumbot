@@ -44,7 +44,7 @@ export class NotificationService {
 
 
       /**
-       * @todo #15:30m/DEV
+       * @todo #15:30m/DEV Create Comment Broken
        *  can't create a comment, it throws the error
        *
        */
