@@ -67,6 +67,7 @@ export class NotificationService {
 
     } catch (e) {
       console.error('Error Creating Comments', e);
+      console.error('Validate', e.request.validate);
     }
 
     /**
