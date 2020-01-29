@@ -34,20 +34,21 @@ export class NotificationService {
     console.log({data});
 
     try {
-      let ownerLogin = data.repository.owner.login;
       let issueUrl = data.subject.url;
-
-      /**
-       * @todo #9:20m/DEV Use user information from latest comment
-       *  get information from latest command about user and add it's name to answer
-       *
-       */
 
       let issueNumber = issueUrl.match(/(\d.)$/)[0];
       response = await octokit.request(data.subject.latest_comment_url);
+      let ownerLogin = response.data.user.login;
 
-      console.log('Comment', {response});
       let repoName = data.repository.name;
+
+
+      /**
+       * @todo #15:30m/DEV Create Comment Broken
+       *  can't create a comment, it throws the error
+       *
+       */
+
 
       /**
        * @todo #9:30m/DEV Answer on latest comment, where bot was mentioned
@@ -66,6 +67,7 @@ export class NotificationService {
 
     } catch (e) {
       console.error('Error Creating Comments', e);
+      console.error('Validate', e.request.validate);
     }
 
     /**
