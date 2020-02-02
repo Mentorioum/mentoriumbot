@@ -33,6 +33,10 @@ export class NotificationService {
 
     console.log({data});
 
+    if (!data){
+      return data;
+    }
+
     try {
       let issueUrl = data.subject.url;
 
@@ -41,14 +45,7 @@ export class NotificationService {
       let ownerLogin = response.data.user.login;
 
       let repoName = data.repository.name;
-
-
-      /**
-       * @todo #15:30m/DEV Create Comment Broken
-       *  can't create a comment, it throws the error
-       *
-       */
-
+      let repoOwner = data.repository.owner.login;
 
       /**
        * @todo #9:30m/DEV Answer on latest comment, where bot was mentioned
@@ -58,7 +55,7 @@ export class NotificationService {
 
       response = await octokit.issues.createComment({
         repo: repoName,
-        owner: ownerLogin,
+        owner: repoOwner,
         issue_number: issueNumber,
         body: `Hi there ! ${ownerLogin}`
       });
@@ -67,7 +64,7 @@ export class NotificationService {
 
     } catch (e) {
       console.error('Error Creating Comments', e);
-      console.error('Validate', e.request.validate);
+      console.error('Validate', e.request);
     }
 
     /**
