@@ -2,16 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { createTokenAuth } from '@octokit/auth';
 import Octokit from '@octokit/rest';
 
-/**
- * @todo #9:30m/DEV  Define start/stop endpoint watch over notifications
- *  use simple setInterval for listen over notifications
- *
- */
-
 @Injectable()
 export class NotificationService {
 
-  async getLatestNotification(): Promise<object> {
+  async searchAndReadyNotificationIfAny(): Promise<object> {
 
     const auth = createTokenAuth(process.env.GITHUB_TOKEN);
     const authentication = await auth();
@@ -70,8 +64,6 @@ export class NotificationService {
       console.error('Error Creating Comments', e);
       console.error('Validate', e.request);
     }
-
-
 
     return thread;
   }
