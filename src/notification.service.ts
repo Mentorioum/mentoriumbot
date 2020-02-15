@@ -16,7 +16,6 @@ export class NotificationService {
       auth: process.env.GITHUB_TOKEN
     });
 
-
     let response: any  = await octokit.activity.listNotifications({
       per_page: 5,
       participating: true,
@@ -32,9 +31,8 @@ export class NotificationService {
     }
 
     try {
-      let issueUrl = thread.subject.url;
-
-      let issueNumber = issueUrl.match(/(\d.)$/)[0];
+      response = await octokit.request(thread.subject.url);
+      let issue = response.data;
       response = await octokit.request(thread.subject.latest_comment_url);
       let ownerLogin = response.data.user.login;
 
@@ -47,10 +45,12 @@ export class NotificationService {
        *  where you was mentioned
        */
 
+      console.log({issue});
+
       response = await octokit.issues.createComment({
         repo: repoName,
         owner: repoOwner,
-        issue_number: issueNumber,
+        issue_number: issue.number,
         body: `Hi there ! ${ownerLogin}`
       });
 
