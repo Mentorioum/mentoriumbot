@@ -29,23 +29,23 @@ export class NotificationService {
       since: '2019-12-27T00:00:00Z'
     });
 
-    let data: any = response.data.pop();
+    let thread: any = response.data.pop();
 
-    console.log({data});
+    console.log({data: thread});
 
-    if (!data){
-      return data;
+    if (!thread){
+      return thread;
     }
 
     try {
-      let issueUrl = data.subject.url;
+      let issueUrl = thread.subject.url;
 
       let issueNumber = issueUrl.match(/(\d.)$/)[0];
-      response = await octokit.request(data.subject.latest_comment_url);
+      response = await octokit.request(thread.subject.latest_comment_url);
       let ownerLogin = response.data.user.login;
 
-      let repoName = data.repository.name;
-      let repoOwner = data.repository.owner.login;
+      let repoName = thread.repository.name;
+      let repoOwner = thread.repository.owner.login;
 
       /**
        * @todo #9:30m/DEV Answer on latest comment, where bot was mentioned
@@ -60,19 +60,19 @@ export class NotificationService {
         body: `Hi there ! ${ownerLogin}`
       });
 
-      console.log({response});
+      console.log({response, thread});
+
+      await octokit.activity.markThreadAsRead({
+        thread_id: thread.id
+      });
 
     } catch (e) {
       console.error('Error Creating Comments', e);
       console.error('Validate', e.request);
     }
 
-    /**
-     * @todo #9:30m/DEV Remove notification after answer
-     *  remove notification after answer
-     *
-     */
 
-    return data;
+
+    return thread;
   }
 }
