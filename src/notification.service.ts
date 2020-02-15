@@ -11,7 +11,7 @@ import Octokit from '@octokit/rest';
 @Injectable()
 export class NotificationService {
 
-  async getLatestNotification(): Promise<object> {
+  async searchAndReadyNotificationIfAny(): Promise<object> {
 
     const auth = createTokenAuth(process.env.GITHUB_TOKEN);
     const authentication = await auth();

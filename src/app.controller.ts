@@ -5,8 +5,8 @@ import { NotificationService } from './notification.service';
 export class AppController {
   constructor(private readonly appService: NotificationService) {}
 
-  @Get()
-  async getHello(): Promise<object> {
-    return await this.appService.getLatestNotification();
+  @Get('searchAndMarksAsRead')
+  async searchAndMarksAsRead(): Promise<object> {
+    return await this.appService.searchAndReadyNotificationIfAny();
   }
 }
