@@ -1,11 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, OnModuleInit } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { NotificationWatcher } from './NotificationWatcher';
 
 @Controller()
-export class AppController {
+export class AppController implements OnModuleInit{
   constructor(private readonly appService: NotificationService,
               private readonly wather: NotificationWatcher) {}
+
+  async onModuleInit(): Promise<any> {
+    return this.wather.start(process.env.NOTIFICATION_WAKEUP_INTERVAL)
+  }
 
   @Get('searchAndMarksAsRead')
   async searchAndMarksAsRead(): Promise<object> {
