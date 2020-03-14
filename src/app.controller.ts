@@ -11,6 +11,18 @@ export class AppController implements OnModuleInit{
     return this.wather.start(process.env.NOTIFICATION_WAKEUP_INTERVAL)
   }
 
+  @Get('findInvitations')
+  async findInvitations(): Promise<Array<object>>  {
+    return await this.appService.fetchInvitations();
+  }
+
+  @Get('findNotifications')
+  async findNotifications(): Promise<Array<object>>  {
+    return await this.appService.fetchNotification({
+      participating: false
+    })
+  }
+
   @Get('searchAndMarksAsRead')
   async searchAndMarksAsRead(): Promise<object> {
     return await this.appService.searchAndReadyNotificationIfAny();

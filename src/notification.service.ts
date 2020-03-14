@@ -2,69 +2,123 @@ import { Injectable } from '@nestjs/common';
 import { createTokenAuth } from '@octokit/auth';
 import Octokit from '@octokit/rest';
 
+const REPO_INVITATION = 'RepositoryInvitation';
+const ISSUE = 'Issue';
+
 @Injectable()
 export class NotificationService {
+  private token: any;
+  private octokit: Octokit;
+
+  constructor() {
+    this.octokit = new Octokit({
+      auth: process.env.GITHUB_TOKEN,
+    });
+  }
+
+  async acceptInvitation(invitation) {
+    return await this.octokit.request(
+      `/user/repository_invitations/${invitation.id}`,
+      {
+        method: 'PATCH',
+      },
+    );
+  }
+
+  async fetchInvitations() {
+    let response: any = await this.octokit.request(
+      '/user/repository_invitations',
+    );
+
+    return response.data;
+  }
+
+  async fetchNotification(params: any = {}) {
+    let response: any = await this.octokit.activity.listNotifications({
+      per_page: 5,
+      since: '2019-12-27T00:00:00Z',
+    });
+
+    return response.data;
+  }
 
   async searchAndReadyNotificationIfAny(): Promise<object> {
 
-    const auth = createTokenAuth(process.env.GITHUB_TOKEN);
-    const authentication = await auth();
+    let response: any = await this.fetchNotification();
 
-    console.log({authentication});
+    let thread: any = response.pop();
 
-    const octokit  = new Octokit({
-      auth: process.env.GITHUB_TOKEN
-    });
+    console.log({ thread });
 
-    let response: any  = await octokit.activity.listNotifications({
-      per_page: 5,
-      participating: true,
-      since: '2019-12-27T00:00:00Z'
-    });
-
-    let thread: any = response.data.pop();
-
-    console.log({data: thread});
-
-    if (!thread){
+    if (!thread) {
       return thread;
     }
 
-    try {
-      response = await octokit.request(thread.subject.url);
-      let issue = response.data;
-      response = await octokit.request(thread.subject.latest_comment_url);
-      let ownerLogin = response.data.user.login;
+    let repoId = thread.repository.id;
+    let repoName = thread.repository.name;
+    let repoOwner = thread.repository.owner.login;
 
-      let repoName = thread.repository.name;
-      let repoOwner = thread.repository.owner.login;
+    if (thread.subject.type === REPO_INVITATION) {
 
-      /**
-       * @todo #9:30m/DEV Answer on latest comment, where bot was mentioned
-       *  it's possible that latest comment in issue is not the comment
-       *  where you was mentioned
-       */
+      const invitations = await this.fetchInvitations();
 
-      console.log({issue});
-
-      response = await octokit.issues.createComment({
-        repo: repoName,
-        owner: repoOwner,
-        issue_number: issue.number,
-        body: `Hi there ! ${ownerLogin}`
+      const invitation = invitations.find(invitation => {
+        return invitation.repository.id === repoId;
       });
 
-      console.log({response, thread});
+      console.log({ invitation });
 
-      await octokit.activity.markThreadAsRead({
-        thread_id: thread.id
-      });
+      if (invitation) {
+        const accept = await this.acceptInvitation(invitation);
+        console.log({ accept });
+      }
 
-    } catch (e) {
-      console.error('Error Creating Comments', e);
-      console.error('Validate', e.request);
+    } else if (thread.subject.type === ISSUE) {
+      try {
+        response = await this.octokit.request(thread.subject.url);
+        let issue = response.data;
+        response = await this.octokit.request(thread.subject.latest_comment_url);
+        let ownerLogin = response.data.user.login;
+
+        /**
+         * @todo #9:30m/DEV Answer on latest comment, where bot was mentioned
+         *  it's possible that latest comment in issue is not the comment
+         *  where you was mentioned
+         */
+
+        console.log({issue});
+
+        response = await this.octokit.issues.createComment({
+          repo: repoName,
+          owner: repoOwner,
+          issue_number: issue.number,
+          body: `Hi there ! ${ownerLogin}`
+        });
+
+        console.log({response, thread});
+
+        await this.octokit.activity.markThreadAsRead({
+          thread_id: thread.id
+        });
+
+      } catch (e) {
+        console.error('Error Creating Comments', e);
+        console.error('Validate', e.request);
+      }
     }
 
     return thread;
+  }
+
+  private async doAuth() {
+    if (this.token) {
+      return this.octokit;
+    }
+
+    const auth = createTokenAuth(process.env.GITHUB_TOKEN);
+    this.token = await auth();
+
+    return this.token;
+
   }
 }
