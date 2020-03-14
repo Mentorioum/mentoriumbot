@@ -47,6 +47,12 @@ export class NotificationService {
     let response: any = await this.fetchNotification();
 
     let thread: any = response.pop();
+    /**
+     * @todo #30:45m/DEV Bot as collaborator get's much more notifications
+     *  Need to filter threads according to cafeterias (invitaion, mention),
+     *  just fist is not enough
+     */
+
 
     console.log({ thread });
 
