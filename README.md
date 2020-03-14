@@ -36,7 +36,6 @@ $ yarn test:cov
 
 ### Pause/Resume App
 
-
 ```
 # pause app
 heroku ps:scale web=0
