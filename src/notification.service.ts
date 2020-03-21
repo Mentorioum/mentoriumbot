@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { createTokenAuth } from '@octokit/auth';
 import Octokit from '@octokit/rest';
 
 const REPO_INVITATION = 'RepositoryInvitation';
 const ISSUE = 'Issue';
+const REASON_ASSIGN = 'assign';
 
 @Injectable()
 export class NotificationService {
@@ -43,16 +43,17 @@ export class NotificationService {
   }
 
   async searchAndReadyNotificationIfAny(): Promise<object> {
-
     let response: any = await this.fetchNotification();
 
-    let thread: any = response.pop();
-    /**
-     * @todo #30:45m/DEV Bot as collaborator get's much more notifications
-     *  Need to filter threads according to cafeterias (invitaion, mention),
-     *  just fist is not enough
-     */
+    for(let thread of response){
+      this.handleNotification(thread);
+    }
 
+    return response;
+  }
+
+  private async handleNotification(thread) {
+    let response;
 
     console.log({ thread });
 
@@ -64,7 +65,25 @@ export class NotificationService {
     let repoName = thread.repository.name;
     let repoOwner = thread.repository.owner.login;
 
-    if (thread.subject.type === REPO_INVITATION) {
+    if (thread.reason === REASON_ASSIGN) {
+
+      response = await this.octokit.request(thread.subject.url);
+      let issue = response.data;
+
+      // TODO: #32 - parse issue.body to get curriculum for new tasks
+
+      response = await this.octokit.issues.createComment({
+        repo: repoName,
+        owner: repoOwner,
+        issue_number: issue.number,
+        body: `Reading issue description...`
+      });
+
+      await this.octokit.activity.markThreadAsRead({
+        thread_id: thread.id
+      });
+
+    } else if (thread.subject.type === REPO_INVITATION) {
 
       const invitations = await this.fetchInvitations();
 
@@ -111,26 +130,11 @@ export class NotificationService {
         console.error('Error Creating Comments', e);
         console.error('Validate', e.request);
       }
+    } else {
+      await this.octokit.activity.markThreadAsRead({
+        thread_id: thread.id
+      });
     }
-
-    /**
-     * @todo #31:30m/DEV Mark all not relevant notifications ans read
-     *  bot got to much not requited notifications
-     *  where you was mentioned
-     */
-
-    return thread;
-  }
-
-  private async doAuth() {
-    if (this.token) {
-      return this.octokit;
-    }
-
-    const auth = createTokenAuth(process.env.GITHUB_TOKEN);
-    this.token = await auth();
-
-    return this.token;
-
   }
 }
+
