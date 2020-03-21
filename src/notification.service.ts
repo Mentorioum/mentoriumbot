@@ -113,6 +113,12 @@ export class NotificationService {
       }
     }
 
+    /**
+     * @todo #31:30m/DEV Mark all not relevant notifications ans read
+     *  bot got to much not requited notifications
+     *  where you was mentioned
+     */
+
     return thread;
   }
 
