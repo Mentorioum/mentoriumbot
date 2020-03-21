@@ -44,7 +44,12 @@ heroku ps:scale web=0
 # resume app
 heroky ps:scale web=1
 
-``
+```
 
+### Deploy
+
+```
+git push heroku master
+```
 
 
