@@ -65,8 +65,13 @@ export class MarkdownLinks implements Links {
   }
 
   toJSON(): Iterable<LinkOutput> {
-    throw Error('Not Yet Implemented!');
-    return [];
+    const outputs = [];
+
+    for (let link of this.iterate()){
+      outputs.push(link.toJSON());
+    }
+
+    return outputs;
   }
 
 
