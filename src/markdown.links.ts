@@ -3,6 +3,12 @@ import { Links } from './links';
 import { Link, LinkOutput } from './link';
 import { ConstLink } from './const.link';
 
+
+/**
+ * @todo #39:1h/DEV Extend with parsing assignee and third task
+ *
+ *
+ */
 export class MarkdownLinks implements Links {
   private content: string;
   private markdown: MarkdownIt;
