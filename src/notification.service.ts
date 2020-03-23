@@ -70,7 +70,12 @@ export class NotificationService {
       response = await this.octokit.request(thread.subject.url);
       let issue = response.data;
 
-      // TODO: #32 - parse issue.body to get curriculum for new tasks
+
+      /**
+       * @todo #39:30m/DEV - Integrate with markdown parser
+       *
+       *
+       */
 
       response = await this.octokit.issues.createComment({
         repo: repoName,
