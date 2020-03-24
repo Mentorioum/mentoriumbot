@@ -50,4 +50,31 @@ describe('MarkdownLinks', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('creates with two links and verification mentor', () => {
+    // TODO: #41 parse attributes
+    links = new MarkdownitLinks(`
+1. [Chapter 1: What Is JavaScript?](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch1.md)[~3h]
+1. [Chapter 2: Surveying JS](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch2.md)[~3h]
+1. [Interview Checkpoint](@nesterone)[verify]
+`, markit);
+
+    expected = [
+      new ConstLink(
+        'https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch1.md',
+        'Chapter 1: What Is JavaScript?'
+      ).toJSON(),
+      new ConstLink(
+        'https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch2.md',
+        'Chapter 2: Surveying JS'
+      ).toJSON(),
+      new ConstLink(
+        '@nesterone',
+        'Interview Checkpoint'
+      ).toJSON()
+    ];
+
+    actual = links.toJSON();
+    expect(actual).toEqual(expected);
+  })
+
 });
