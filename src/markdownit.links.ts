@@ -3,19 +3,18 @@ import { Links } from './links';
 import { Link, LinkOutput } from './link';
 import { ConstLink } from './const.link';
 
-
 /**
  * @todo #39:1h/DEV Extend with parsing assignee and third task
  *
  *
  */
-export class MarkdownLinks implements Links {
+export class MarkdownitLinks implements Links {
   private content: string;
   private markdown: MarkdownIt;
 
-  constructor(content: string) {
+  constructor(content: string, markdown: MarkdownIt) {
     this.content = content;
-    this.markdown = new MarkdownIt();
+    this.markdown = markdown;
   }
 
   iterate(): Iterable<Link> {

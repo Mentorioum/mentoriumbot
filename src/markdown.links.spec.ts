@@ -1,19 +1,25 @@
-import { MarkdownLinks } from './markdown.links';
+import MarkdownIt from 'markdown-it';
+import { MarkdownitLinks } from './markdownit.links';
 import { ConstLink } from './const.link';
 
 describe('MarkdownLinks', () => {
 
-  let links, actual, expected;
+  let links, actual, expected, markit;
+
+  beforeEach(() => {
+    markit = new MarkdownIt();
+  });
 
   it('create with empty content', () => {
-    links = new MarkdownLinks('');
+    links = new MarkdownitLinks('', markit);
+
     expect(links.iterate()).toEqual([]);
   });
 
   it('create with one link', () => {
-    links = new MarkdownLinks(`
+    links = new MarkdownitLinks(`
     1. [Chapter 1: What Is JavaScript?](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch1.md) [~3h]
-    `);
+    `,markit);
     expected = new ConstLink(
       'https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch1.md',
       'Chapter 1: What Is JavaScript?',
@@ -24,10 +30,10 @@ describe('MarkdownLinks', () => {
   });
 
   it('creates with two links', () => {
-    links = new MarkdownLinks(`
+    links = new MarkdownitLinks(`
 1. [Chapter 1: What Is JavaScript?](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch1.md)[~3h]
-2. [Chapter 2: Surveying JS](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch2.md)[~3h]`
-    );
+2. [Chapter 2: Surveying JS](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch2.md)[~3h]`,
+    markit);
 
     expected = [
       new ConstLink(
