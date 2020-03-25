@@ -1,20 +1,18 @@
+import assert from 'assert';
 import MarkdownIt from 'markdown-it';
 import { Links } from './links';
 import { Link, LinkOutput } from './link';
 import { ConstLink } from './const.link';
 
-/**
- * @todo #39:1h/DEV Extend with parsing assignee and third task
- *
- *
- */
 export class MarkdownitLinks implements Links {
   private content: string;
   private markdown: MarkdownIt;
 
-  constructor(content: string, markdown: MarkdownIt) {
+  constructor(content: string = '', markdown: MarkdownIt) {
     this.content = content;
     this.markdown = markdown;
+
+    assert.ok(this.markdown);
   }
 
   iterate(): Iterable<Link> {
