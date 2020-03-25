@@ -34,10 +34,7 @@ export class MarkdownitLinks implements Links {
           || child.type === 'link_close';
       });
 
-      let uri;
-      let title = '';
       let link;
-      let relation;
       let isClosed = false;
 
       for (let subtoken of subtokens) {
@@ -47,13 +44,12 @@ export class MarkdownitLinks implements Links {
           const attrs = subtoken.attrs;
 
           if (attrs.length) {
-            uri = attrs[0][1];
-            link = { uri }
+            link = { uri: attrs[0][1] }
           }
         }
 
         if (!isClosed && link && subtoken.type === 'text') {
-          title = subtoken.content;
+          let title = subtoken.content;
           link = { ...link, title }
         }
 
@@ -64,6 +60,7 @@ export class MarkdownitLinks implements Links {
 
         if (link && isClosed && subtoken.type === 'text') {
           let text = subtoken.content;
+          let relation = '';
           let relationPattern = /\((.*)\)/;
 
           let relationMatch = text.match(relationPattern);
