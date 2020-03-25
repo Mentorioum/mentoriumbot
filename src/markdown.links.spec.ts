@@ -3,7 +3,6 @@ import { MarkdownitLinks } from './markdownit.links';
 import { ConstLink } from './const.link';
 
 describe('MarkdownLinks', () => {
-
   let links, actual, expected, markit;
 
   beforeEach(() => {
@@ -55,7 +54,7 @@ describe('MarkdownLinks', () => {
     links = new MarkdownitLinks(`
 1. [Chapter 1: What Is JavaScript?](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch1.md)[~3h]
 1. [Chapter 2: Surveying JS](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started/ch2.md)[~3h]
-1. [Interview Checkpoint](@nesterone)[verify]
+1. [Interview Checkpoint](@nesterone)(verify)
 `, markit);
 
     expected = [
@@ -69,7 +68,8 @@ describe('MarkdownLinks', () => {
       ).toJSON(),
       new ConstLink(
         '@nesterone',
-        'Interview Checkpoint'
+        'Interview Checkpoint',
+        'verify'
       ).toJSON()
     ];
 

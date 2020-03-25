@@ -18,10 +18,10 @@ export class MarkdownitLinks implements Links {
   }
 
   iterate(): Iterable<Link> {
-
     const tokens = this.markdown.parseInline(this.content, {});
 
     let links = [];
+
 
     for (let token of tokens) {
       if (!token.children) {
@@ -37,31 +37,42 @@ export class MarkdownitLinks implements Links {
       let uri;
       let title = '';
       let link;
+      let relation;
+      let isClosed = false;
 
       for (let subtoken of subtokens) {
 
         if (subtoken.type === 'link_open') {
+          isClosed = false;
           const attrs = subtoken.attrs;
 
           if (attrs.length) {
             uri = attrs[0][1];
+            link = { uri }
           }
         }
 
-        if (uri && subtoken.type === 'text') {
+        if (!isClosed && link && subtoken.type === 'text') {
           title = subtoken.content;
+          link = { ...link, title }
         }
 
 
-        if (subtoken.type === 'link_close') {
+        if (!isClosed && link && subtoken.type === 'link_close') {
+          isClosed = true;
+        }
 
-          if (uri) {
-            link = new ConstLink(uri, title);
-            links.push(link);
+        if (link && isClosed && subtoken.type === 'text') {
+          let text = subtoken.content;
+          let relationPattern = /\((.*)\)/;
+
+          let relationMatch = text.match(relationPattern);
+          if (relationMatch && relationMatch.length >= 2) {
+            relation = relationMatch[1];
           }
 
-          uri = '';
-          title = '';
+          links.push(new ConstLink(link.uri, link.title, relation));
+          link = null
         }
       }
     }
