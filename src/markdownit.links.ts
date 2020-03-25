@@ -1,28 +1,25 @@
+import assert from 'assert';
 import MarkdownIt from 'markdown-it';
 import { Links } from './links';
 import { Link, LinkOutput } from './link';
 import { ConstLink } from './const.link';
 
-
-/**
- * @todo #39:1h/DEV Extend with parsing assignee and third task
- *
- *
- */
-export class MarkdownLinks implements Links {
+export class MarkdownitLinks implements Links {
   private content: string;
   private markdown: MarkdownIt;
 
-  constructor(content: string) {
+  constructor(content: string = '', markdown: MarkdownIt) {
     this.content = content;
-    this.markdown = new MarkdownIt();
+    this.markdown = markdown;
+
+    assert.ok(this.markdown);
   }
 
   iterate(): Iterable<Link> {
-
     const tokens = this.markdown.parseInline(this.content, {});
 
     let links = [];
+
 
     for (let token of tokens) {
       if (!token.children) {
@@ -35,34 +32,42 @@ export class MarkdownLinks implements Links {
           || child.type === 'link_close';
       });
 
-      let uri;
-      let title = '';
       let link;
+      let isClosed = false;
 
       for (let subtoken of subtokens) {
 
         if (subtoken.type === 'link_open') {
+          isClosed = false;
           const attrs = subtoken.attrs;
 
           if (attrs.length) {
-            uri = attrs[0][1];
+            link = { uri: attrs[0][1] }
           }
         }
 
-        if (uri && subtoken.type === 'text') {
-          title = subtoken.content;
+        if (!isClosed && link && subtoken.type === 'text') {
+          let title = subtoken.content;
+          link = { ...link, title }
         }
 
 
-        if (subtoken.type === 'link_close') {
+        if (!isClosed && link && subtoken.type === 'link_close') {
+          isClosed = true;
+        }
 
-          if (uri) {
-            link = new ConstLink(uri, title);
-            links.push(link);
+        if (link && isClosed && subtoken.type === 'text') {
+          let text = subtoken.content;
+          let relation = '';
+          let relationPattern = /\((.*)\)/;
+
+          let relationMatch = text.match(relationPattern);
+          if (relationMatch && relationMatch.length >= 2) {
+            relation = relationMatch[1];
           }
 
-          uri = '';
-          title = '';
+          links.push(new ConstLink(link.uri, link.title, relation));
+          link = null
         }
       }
     }
