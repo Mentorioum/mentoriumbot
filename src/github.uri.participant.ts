@@ -1,12 +1,12 @@
-import { Participant } from './participant';
+import { Participant, ParticipantOutput } from './participant';
 import { ProviderEnum } from './provider.enum';
 import * as assert from 'assert';
+import { ConstParticipant } from './const.participant';
 
 export class GithubUriParticipant implements Participant {
   private uri: URL;
 
   constructor(url: URL) {
-
     this.uri = url;
   }
 
@@ -23,5 +23,13 @@ export class GithubUriParticipant implements Participant {
   }
   provider(){
     return ProviderEnum.GITHUB
+  }
+
+  toJSON(): ParticipantOutput {
+    let participant = new ConstParticipant(
+      this.login(),
+      this.provider()
+    );
+    return participant.toJSON();
   }
 }

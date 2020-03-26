@@ -2,7 +2,7 @@ import { Link, LinkOutput } from './link';
 
 export interface Links {
 
-  iterate(): Iterable<Link>
+  iterate(): Array<Link>
 
-  toJSON(): Iterable<LinkOutput>
+  toJSON(): Array<LinkOutput>
 }

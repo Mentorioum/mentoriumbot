@@ -1,4 +1,4 @@
-import { Task } from './task';
+import { Task, TaskOutput } from './task';
 import { Participant } from './participant';
 import { NotYetImplementedException } from './not.yet.implemented.exception';
 
@@ -13,6 +13,8 @@ export class GithubTask implements Task {
     return '';
   }
 
-
-
+  toJSON(): TaskOutput {
+    throw new NotYetImplementedException();
+    return undefined;
+  }
 }

@@ -15,7 +15,7 @@ export class MarkdownitLinks implements Links {
     assert.ok(this.markdown);
   }
 
-  iterate(): Iterable<Link> {
+  iterate(): Array<Link> {
     const tokens = this.markdown.parseInline(this.content, {});
 
     let links = [];
@@ -75,7 +75,7 @@ export class MarkdownitLinks implements Links {
     return links;
   }
 
-  toJSON(): Iterable<LinkOutput> {
+  toJSON(): Array<LinkOutput> {
     const outputs = [];
 
     for (let link of this.iterate()){

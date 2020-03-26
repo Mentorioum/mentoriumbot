@@ -3,17 +3,17 @@ import { Links } from './links';
 import { cloneDeep, map }from 'lodash'
 
 export class ConstLinks implements Links {
-  private array: Link[];
+  private readonly array: Link[];
 
   constructor(array: Link[]) {
     this.array = array;
   }
 
-  iterate(): Iterable<Link> {
+  iterate() {
     return cloneDeep(this.array);
   }
 
-  toJSON(): Iterable<LinkOutput>{
+  toJSON() {
     return map(this.array, link => link.toJSON());
   }
 }

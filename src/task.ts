@@ -1,6 +1,12 @@
-import { Participant } from './participant';
+import { Participant, ParticipantOutput } from './participant';
+
+export interface TaskOutput {
+  assignee: ParticipantOutput,
+  description: string
+}
 
 export interface Task {
   assignee(): Participant
-  description(): string
+  description(): string,
+  toJSON(): TaskOutput
 }
