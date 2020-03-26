@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import Octokit from '@octokit/rest';
+import MarkdownIt from 'markdown-it/lib';
+import { MarkdownitLinks } from './markdownit.links';
 
 const REPO_INVITATION = 'RepositoryInvitation';
 const ISSUE = 'Issue';
@@ -9,11 +11,14 @@ const REASON_ASSIGN = 'assign';
 export class NotificationService {
   private token: any;
   private octokit: Octokit;
+  private markdownit: MarkdownIt;
 
   constructor() {
     this.octokit = new Octokit({
       auth: process.env.GITHUB_TOKEN,
     });
+
+    this.markdownit = new MarkdownIt();
   }
 
   async acceptInvitation(invitation) {
@@ -69,13 +74,10 @@ export class NotificationService {
 
       response = await this.octokit.request(thread.subject.url);
       let issue = response.data;
+      const links = new MarkdownitLinks(issue.body, this.markdownit);
 
+      console.log({ instructions: links.toJSON() });
 
-      /**
-       * @todo #39:30m/DEV - Integrate with markdown parser
-       *
-       *
-       */
 
       response = await this.octokit.issues.createComment({
         repo: repoName,
@@ -84,9 +86,9 @@ export class NotificationService {
         body: `Reading issue description...`
       });
 
-      await this.octokit.activity.markThreadAsRead({
-        thread_id: thread.id
-      });
+      // await this.octokit.activity.markThreadAsRead({
+      //   thread_id: thread.id
+      // });
 
     } else if (thread.subject.type === REPO_INVITATION) {
 
