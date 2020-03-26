@@ -76,6 +76,8 @@ export class NotificationService {
       let issue = response.data;
       const links = new MarkdownitLinks(issue.body, this.markdownit);
 
+      // TODO: #42 look on links and reply with steps to do.
+
       console.log({ instructions: links.toJSON() });
 
 

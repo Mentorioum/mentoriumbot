@@ -1,6 +1,6 @@
 import { Controller, Get, OnModuleInit } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { NotificationWatcher } from './NotificationWatcher';
+import { NotificationWatcher } from './notification.watcher';
 
 @Controller()
 export class AppController implements OnModuleInit{
