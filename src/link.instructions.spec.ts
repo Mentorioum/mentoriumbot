@@ -42,14 +42,16 @@ describe('Links Instructions', () => {
 
   it('get all tasks one by one tasks', () => {
     let instructions = new LinkInstructions(links);
+    let trainee = 'bazzika';
     let participant = new ConstParticipant(
-      'bazzika',
+      trainee,
       ProviderEnum.GITHUB
     );
 
     let next = new ConstTask(
        participant,
-      `Please, read [${second.title()}](${second.uri()})`
+      `Please, read [${second.title()}](${second.uri()})`,
+      `Read: ${second.title()}`
     );
 
     expect(instructions.hasNext()).toBeTruthy();
@@ -57,7 +59,8 @@ describe('Links Instructions', () => {
 
     next = new ConstTask(
       participant,
-      `Please, read [${third.title()}](${third.uri()})`
+      `Please, read [${third.title()}](${third.uri()})`,
+      `Read: ${third.title()}`
     );
 
     expect(instructions.hasNext()).toBeTruthy();
@@ -70,7 +73,8 @@ describe('Links Instructions', () => {
 
     next = new ConstTask(
       participant,
-      `Please, read [${fourth.title()}](${fourth.uri()})`
+      `Please, check that @${trainee} done assigned tasks`,
+      `Verification: ${fourth.title()}`
     );
 
     expect(instructions.hasNext()).toBeTruthy();

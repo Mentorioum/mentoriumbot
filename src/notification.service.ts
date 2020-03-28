@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import Octokit from '@octokit/rest';
 import MarkdownIt from 'markdown-it/lib';
 import { MarkdownitLinks } from './markdownit.links';
+import { LinkInstructions } from './link.instructions';
 
 const REPO_INVITATION = 'RepositoryInvitation';
 const ISSUE = 'Issue';
@@ -77,20 +78,49 @@ export class NotificationService {
       const links = new MarkdownitLinks(issue.body, this.markdownit);
 
       // TODO: #42 look on links and reply with steps to do.
+      let instructions = new LinkInstructions(links);
 
-      console.log({ instructions: links.toJSON() });
+      console.log({ instructions });
 
+      const numbers = [];
+
+      while (instructions.hasNext()) {
+
+        let task = instructions.next();
+        console.log({ task: task.toJSON() });
+
+
+        /**
+         * @todo #42:30m/DEV - Handle issue's creation errors
+         *  at least inform creator of that root issue that error occurs
+         *
+         */
+
+        // TODO: #42 provide link to root issue for other tasks
+
+        response = await this.octokit.issues.create({
+          owner: repoOwner,
+          repo: repoName,
+          title: task.title(),
+          body: task.description(),
+          assignees: [task.assignee().login()]
+        });
+
+        numbers.push('#' + response.data.number);
+
+        console.log({ issueCreated: response});
+      }
 
       response = await this.octokit.issues.createComment({
         repo: repoName,
         owner: repoOwner,
         issue_number: issue.number,
-        body: `Reading issue description...`
+        body: `Created next issues: ${numbers.join(',')}`
       });
 
-      // await this.octokit.activity.markThreadAsRead({
-      //   thread_id: thread.id
-      // });
+      await this.octokit.activity.markThreadAsRead({
+        thread_id: thread.id
+      });
 
     } else if (thread.subject.type === REPO_INVITATION) {
 

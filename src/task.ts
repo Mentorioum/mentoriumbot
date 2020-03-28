@@ -6,7 +6,8 @@ export interface TaskOutput {
 }
 
 export interface Task {
+  title(): string
   assignee(): Participant
-  description(): string,
+  description(): string
   toJSON(): TaskOutput
 }

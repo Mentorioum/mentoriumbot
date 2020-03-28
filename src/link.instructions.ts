@@ -51,23 +51,27 @@ export class LinkInstructions implements Instructions {
       return this.next();
     }
 
+    /**
+     * @todo #42:30m/DEV Introduce MarkdownDescriptionPrinters
+     *   a lot of places where generation of description is duplicated
+     *
+     */
+
+    let description = `Please, read [${link.title()}](${link.uri()})`;
+    let title = `Read: ${link.title()}`;
+
     if (link.relation() === RelationEnum.VERIFICATION){
+      description = `Please, check that @${this.recipient.login()} done assigned tasks`;
+      title = `Verification: ${link.title()}`;
+
       this.recipient = new GithubUriParticipant(
         new URL(link.uri())
-      )
+      );
     }
 
     assert.ok(this.recipient, 'should find recipient first');
 
-    /**
-     * @todo #42:30m/DEV Introduce MarkdownDescriptionPrinters
-     *   a lot of places where generation of descrption is duplicated
-     *
-     */
-
-    const description = `Please, read [${link.title()}](${link.uri()})`;
-
-    return new ConstTask(this.recipient, description);
+    return new ConstTask(this.recipient, description, title);
   }
 
 }
