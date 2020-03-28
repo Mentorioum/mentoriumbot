@@ -53,7 +53,7 @@ export class LinkInstructions implements Instructions {
 
     /**
      * @todo #42:30m/DEV Introduce MarkdownDescriptionPrinters
-     *   a lot of places where generation of description is duplicated
+     *  a lot of places where generation of description is duplicated
      *
      */
 
