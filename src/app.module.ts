@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { NotificationService } from './notification.service';
-import { NotificationWatcher } from './NotificationWatcher';
+import { NotificationWatcher } from './notification.watcher';
 
 @Module({
   imports: [],
