@@ -75,9 +75,8 @@ export class NotificationService {
 
       response = await this.octokit.request(thread.subject.url);
       let issue = response.data;
+      // TODO: #42 Provide validation over parsed links
       const links = new MarkdownitLinks(issue.body, this.markdownit);
-
-      // TODO: #42 look on links and reply with steps to do.
       let instructions = new LinkInstructions(links);
 
       console.log({ instructions });
@@ -89,7 +88,6 @@ export class NotificationService {
         let task = instructions.next();
         console.log({ task: task.toJSON() });
 
-
         /**
          * @todo #42:30m/DEV - Handle issue's creation errors
          *  at least inform creator of that root issue that error occurs
@@ -97,7 +95,6 @@ export class NotificationService {
          */
 
         // TODO: #42 provide link to root issue for other tasks
-
         response = await this.octokit.issues.create({
           owner: repoOwner,
           repo: repoName,
