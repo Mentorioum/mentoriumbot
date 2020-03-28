@@ -50,7 +50,6 @@ describe('MarkdownLinks', () => {
   });
 
   it('parse verification link', () => {
-    // TODO: #41 parse attributes
     links = new MarkdownitLinks(`
 1. [Interview Checkpoint](@nesterone)(verify)
 `, markit);
