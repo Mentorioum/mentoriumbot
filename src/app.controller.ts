@@ -8,7 +8,9 @@ export class AppController implements OnModuleInit{
               private readonly wather: NotificationWatcher) {}
 
   async onModuleInit(): Promise<any> {
-    return this.wather.start(process.env.NOTIFICATION_WAKEUP_INTERVAL)
+    // TODO: #53 remove or move workflow management to other place
+    // return this.wather.start(process.env.NOTIFICATION_WAKEUP_INTERVAL)
+    return Promise.resolve(true);
   }
 
   @Get('findInvitations')
