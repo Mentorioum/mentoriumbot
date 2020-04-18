@@ -1,6 +1,6 @@
 import { ConstLink } from './const.link';
 import { ConstLinks } from './const.links';
-import { RelationEnum } from './relation.enum';
+import { RelationEnum } from '../relation.enum';
 
 describe('ConstLinks', () => {
    it('create const links', () => {

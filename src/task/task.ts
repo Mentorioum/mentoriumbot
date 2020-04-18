@@ -1,4 +1,4 @@
-import { Participant, ParticipantOutput } from './participant';
+import { Participant, ParticipantOutput } from '../participant/participant';
 
 export interface TaskOutput {
   assignee: ParticipantOutput,

@@ -1,5 +1,5 @@
 import { Task, TaskOutput } from './task';
-import { Participant } from './participant';
+import { Participant } from '../participant/participant';
 
 export class ConstTask implements Task {
   private readonly _assignee: Participant;

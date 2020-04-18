@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import Octokit from '@octokit/rest';
 import MarkdownIt from 'markdown-it/lib';
 import { Client, HandlerArgs, logger, Variables } from 'camunda-external-task-client-js';
-import { MarkdownitLinks } from './markdownit.links';
-import { LinkInstructions } from './link.instructions';
+import { MarkdownitLinks } from './links/markdownit.links';
+import { LinkInstructions } from './instructions/link.instructions';
 
 const REPO_INVITATION = 'RepositoryInvitation';
 const ISSUE = 'Issue';

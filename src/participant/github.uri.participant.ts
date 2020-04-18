@@ -1,5 +1,5 @@
 import { Participant, ParticipantOutput } from './participant';
-import { ProviderEnum } from './provider.enum';
+import { ProviderEnum } from '../provider.enum';
 import * as assert from 'assert';
 import { ConstParticipant } from './const.participant';
 
