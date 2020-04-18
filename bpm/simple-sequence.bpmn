@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1am9bse" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.1">
+  <bpmn:process id="Process_0boccr7" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start Education&#10;&#10;">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="done" label="Done" type="boolean" defaultValue="false" />
+          <camunda:formField id="rootIssueNumber" label="Root Issue Number" type="string" defaultValue="33" />
+          <camunda:formField id="owner" label="Owner" type="string" defaultValue="Mentorioum" />
+          <camunda:formField id="repo" label="Repo" type="string" defaultValue="mentorioum-docs" />
+          <camunda:formField id="firstIssueNumber" label="First Issue Number" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_15r6iii</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_15r6iii" sourceRef="StartEvent_1" targetRef="Activity_1jg9tg8" />
+    <bpmn:endEvent id="Event_08bhpnl" name="Finish Education">
+      <bpmn:incoming>Flow_072wbg8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_07z6zfi" sourceRef="Activity_1jg9tg8" targetRef="Gateway_1426ssk" />
+    <bpmn:serviceTask id="Activity_1jg9tg8" name="Read: Chapter 1" camunda:type="external" camunda:topic="check-task">
+      <bpmn:incoming>Flow_15r6iii</bpmn:incoming>
+      <bpmn:outgoing>Flow_07z6zfi</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_072wbg8" sourceRef="Activity_1yh5gvz" targetRef="Event_08bhpnl" />
+    <bpmn:serviceTask id="Activity_1yh5gvz" name="Report Status" camunda:type="external" camunda:topic="collaboration-step-report">
+      <bpmn:incoming>Flow_1yxpbjs</bpmn:incoming>
+      <bpmn:outgoing>Flow_072wbg8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1426ssk" name="Done?">
+      <bpmn:incoming>Flow_07z6zfi</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yxpbjs</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0omgz2u</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1yxpbjs" name="Yes" sourceRef="Gateway_1426ssk" targetRef="Activity_1yh5gvz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${done}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1nmpmb4" name="Try Again">
+      <bpmn:incoming>Flow_0omgz2u</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0omgz2u" name="No" sourceRef="Gateway_1426ssk" targetRef="Event_1nmpmb4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!done}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0boccr7">
+      <bpmndi:BPMNEdge id="Flow_15r6iii_di" bpmnElement="Flow_15r6iii">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="420" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07z6zfi_di" bpmnElement="Flow_07z6zfi">
+        <di:waypoint x="520" y="117" />
+        <di:waypoint x="645" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_072wbg8_di" bpmnElement="Flow_072wbg8">
+        <di:waypoint x="930" y="117" />
+        <di:waypoint x="1042" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yxpbjs_di" bpmnElement="Flow_1yxpbjs">
+        <di:waypoint x="695" y="117" />
+        <di:waypoint x="830" y="117" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="754" y="99" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0omgz2u_di" bpmnElement="Flow_0omgz2u">
+        <di:waypoint x="670" y="142" />
+        <di:waypoint x="670" y="282" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="678" y="204" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="142" width="76" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jgfbhf_di" bpmnElement="Activity_1jg9tg8">
+        <dc:Bounds x="420" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1m2cnmf_di" bpmnElement="Activity_1yh5gvz">
+        <dc:Bounds x="830" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1426ssk_di" bpmnElement="Gateway_1426ssk" isMarkerVisible="true">
+        <dc:Bounds x="645" y="92" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="655" y="62" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1nmpmb4_di" bpmnElement="Event_1nmpmb4">
+        <dc:Bounds x="652" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="325" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08bhpnl_di" bpmnElement="Event_08bhpnl">
+        <dc:Bounds x="1042" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1019" y="142" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

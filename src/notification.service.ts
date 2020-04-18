@@ -1,18 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import Octokit from '@octokit/rest';
 import MarkdownIt from 'markdown-it/lib';
-import { MarkdownitLinks } from './markdownit.links';
-import { LinkInstructions } from './link.instructions';
+import { Client, HandlerArgs, logger, Variables } from 'camunda-external-task-client-js';
+import { MarkdownitLinks } from './links/markdownit.links';
+import { LinkInstructions } from './instructions/link.instructions';
 
 const REPO_INVITATION = 'RepositoryInvitation';
 const ISSUE = 'Issue';
 const REASON_ASSIGN = 'assign';
+
+
+/**
+ * @todo #53:30m/DEV Extract configuration to upper layers
+ *  config should be in root of app and take it from env
+ *
+ */
+// configuration for the Client:
+//  - 'baseUrl': url to the Process Engine
+//  - 'logger': utility to automatically log important events
+//  - 'asyncResponseTimeout': long polling timeout (then a new request will be issued)
+const config = {
+  baseUrl: 'http://localhost:8080/engine-rest',
+  use: logger, asyncResponseTimeout: 10000
+};
 
 @Injectable()
 export class NotificationService {
   private token: any;
   private octokit: Octokit;
   private markdownit: MarkdownIt;
+  private workflow: Client;
 
   constructor() {
     this.octokit = new Octokit({
@@ -20,6 +37,72 @@ export class NotificationService {
     });
 
     this.markdownit = new MarkdownIt();
+
+    this.workflow = new Client(config);
+
+    this.handleTaskCheck = this.handleTaskCheck.bind(this);
+    this.handleTaskReport = this.handleTaskReport.bind(this);
+
+    this.workflow.subscribe('check-task', this.handleTaskCheck);
+    this.workflow.subscribe('collaboration-step-report', this.handleTaskReport);
+  }
+
+
+  private async handleTaskCheck(args : HandlerArgs) {
+    const { task, taskService } = args;
+    let variables = task.variables;
+
+    console.log({
+      message: 'Task Check',
+      task,
+      variables: variables.getAll()
+    });
+
+    const number = variables.get('firstIssueNumber');
+    const owner = variables.get('owner');
+    const repo = variables.get('repo');
+
+    const responseIssue = await this.octokit.issues.get({
+      owner,
+      repo,
+      issue_number: number
+    });
+
+    const issue = responseIssue.data;
+
+    console.log({ issue });
+
+    if (issue.state === 'closed'){
+
+      const newVars = new Variables().setAll({ done: true });
+
+      await taskService.complete(task, newVars);
+    }
+  }
+
+  private async handleTaskReport(args: HandlerArgs) {
+    const { task, taskService } = args;
+    let variables = task.variables;
+
+    console.log({
+      message: 'Task Report',
+      task,
+      variables: task.variables.getAll()
+    });
+
+    const rootIssueNumber = variables.get('rootIssueNumber');
+    const firstIssueNumber = variables.get('firstIssueNumber');
+    const owner = variables.get('owner');
+    const repo = variables.get('repo');
+
+    const response = await this.octokit.issues.createComment({
+      repo,
+      owner,
+      issue_number: rootIssueNumber,
+      body: `Closed issue: #${firstIssueNumber}`
+    });
+
+    await taskService.complete(task);
   }
 
   async acceptInvitation(invitation) {
@@ -172,5 +255,6 @@ export class NotificationService {
       });
     }
   }
+
 }
 

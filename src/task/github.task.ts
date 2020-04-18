@@ -1,6 +1,6 @@
 import { Task, TaskOutput } from './task';
-import { Participant } from './participant';
-import { NotYetImplementedException } from './not.yet.implemented.exception';
+import { Participant } from '../participant/participant';
+import { NotYetImplementedException } from '../errors/not.yet.implemented.exception';
 
 export class GithubTask implements Task {
 

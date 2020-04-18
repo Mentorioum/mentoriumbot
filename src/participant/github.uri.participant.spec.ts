@@ -1,5 +1,5 @@
 import { GithubUriParticipant } from './github.uri.participant';
-import { ProviderEnum } from './provider.enum';
+import { ProviderEnum } from '../provider.enum';
 
 describe('github participant', () => {
 

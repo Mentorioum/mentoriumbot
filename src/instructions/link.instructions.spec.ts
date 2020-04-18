@@ -1,12 +1,12 @@
 import { LinkInstructions } from './link.instructions';
-import { Links } from './links';
-import { ConstLinks } from './const.links';
-import { ConstLink } from './const.link';
-import { Link } from './link';
-import { ConstTask } from './const.task';
-import { ConstParticipant } from './const.participant';
-import { ProviderEnum } from './provider.enum';
-import { RelationEnum } from './relation.enum';
+import { Links } from '../links/links';
+import { ConstLinks } from '../links/const.links';
+import { ConstLink } from '../links/const.link';
+import { Link } from '../links/link';
+import { ConstTask } from '../task/const.task';
+import { ConstParticipant } from '../participant/const.participant';
+import { ProviderEnum } from '../provider.enum';
+import { RelationEnum } from '../relation.enum';
 
 describe('Links Instructions', () => {
   let links: Links, first: Link, second: Link, third: Link, fourth: Link;

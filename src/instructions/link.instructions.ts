@@ -1,10 +1,10 @@
 import { Instructions } from './Instructions';
-import { Task } from './task';
-import { Links } from './links';
-import { ConstTask } from './const.task';
-import { GithubUriParticipant } from './github.uri.participant';
-import { RelationEnum } from './relation.enum';
-import { Participant } from './participant';
+import { Task } from '../task/task';
+import { Links } from '../links/links';
+import { ConstTask } from '../task/const.task';
+import { GithubUriParticipant } from '../participant/github.uri.participant';
+import { RelationEnum } from '../relation.enum';
+import { Participant } from '../participant/participant';
 import * as assert from 'assert';
 
 export class LinkInstructions implements Instructions {
